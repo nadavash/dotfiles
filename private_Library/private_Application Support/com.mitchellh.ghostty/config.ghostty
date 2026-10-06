@@ -1,0 +1,13 @@
+macos-icon = retro
+theme = dark:Catppuccin Frappe,light:Catppuccin Latte
+background-opacity = 0.7
+background-blur = macos-glass-regular
+unfocused-split-opacity = 0.2
+
+font-size = 14
+
+window-padding-x = 0
+window-padding-y = 0
+window-padding-color = extend
+window-padding-balance = true
+adjust-cell-height = 0
