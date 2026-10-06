@@ -1,7 +1,7 @@
 theme = dark:Catppuccin Frappe,light:Catppuccin Latte
 
 macos-icon = custom
-macos-custom-icon = ayu-mirage.icns
+macos-custom-icon = ~/Library/Application Support/com.mitchellh.ghostty/ayu-mirage.icns
 
 font-size = 14
 
