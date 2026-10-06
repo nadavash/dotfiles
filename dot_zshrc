@@ -12,6 +12,9 @@ export PATH="$PATH:/Users/nadav/.lmstudio/bin"
 # Go bin
 export PATH="$PATH:/Users/nadav/go/bin"
 
+# Exprting paths.
+export PATH="$HOME/.local/bin:$PATH"
+export PATH="/opt/homebrew/opt/rustup/bin:$PATH"
 
 # >>> grok installer >>>
 export PATH="$HOME/.grok/bin:$PATH"
@@ -19,5 +22,3 @@ fpath=(~/.grok/completions/zsh $fpath)
 autoload -Uz compinit && compinit -C
 # <<< grok installer <<<
 
-export PATH="$HOME/.local/bin:$PATH"
-export PATH="/opt/homebrew/opt/rustup/bin:$PATH"
