@@ -6,5 +6,6 @@
 	helper = /usr/local/share/gcm-core/git-credential-manager
 [credential "https://dev.azure.com"]
 	useHttpPath = true
-[includeIf "hasconfig:remote.*.url:**github.rbx.com**"]
+
+[includeIf "hasconfig:remote.*.url:https://github.rbx.com/**"]
 	path = ~/.gitconfig-work
