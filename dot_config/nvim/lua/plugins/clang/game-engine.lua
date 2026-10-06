@@ -12,8 +12,8 @@ local default_platform = vim.fn.has("mac") == 1 and "macos/arm64" or "linux/x86_
 local targets = { "client", "studio", "common-tests" }
 
 local function engine_root(source)
-  local root = vim.fs.root(source, { "gobot.yaml", ".git" })
-  if root and root:find("game-engine", 1, true) then
+  local root = vim.fs.root(source, { "GameEngine.code-workspace" })
+  if root then
     return root
   end
 end
