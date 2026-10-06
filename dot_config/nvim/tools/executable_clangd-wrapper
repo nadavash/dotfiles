@@ -1,0 +1,110 @@
+#!/usr/bin/env bash
+
+# Must stay compatible with bash 3.2 (the macOS system bash) and with both
+# GNU (Linux) and BSD (macOS) userland tools.
+
+set -Eeuo pipefail
+
+if [[ "${CLANGD_WRAPPER_DEBUG:-0}" == "1" ]]; then
+  set -x
+fi
+
+die() {
+  printf 'clangd-wrapper: error: %s\n' "$*" >&2
+  exit 1
+}
+
+if ! REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)"; then
+  die "not running inside a Git repository"
+fi
+
+OS="$(uname -s)"
+
+# Prefer the repo-provided clangd (matches the engine toolchain), then PATH,
+# then the one shipped with Xcode on macOS.
+find_clangd() {
+  local repo_clangd="${REPO_ROOT}/Client/dependencies/clang-tools/bin/clangd"
+
+  if [[ -x "$repo_clangd" ]]; then
+    printf '%s\n' "$repo_clangd"
+  elif command -v clangd-20 >/dev/null 2>&1; then
+    command -v clangd-20
+  elif command -v clangd >/dev/null 2>&1; then
+    command -v clangd
+  elif [[ "$OS" == "Darwin" ]] && xcrun --find clangd >/dev/null 2>&1; then
+    xcrun --find clangd
+  else
+    return 1
+  fi
+}
+
+CLANGD="$(find_clangd)" || die "clangd not found (repo clang-tools, PATH or Xcode)"
+
+# The bundled gnu toolchain only exists on Linux; on macOS clangd handles the
+# Apple clang driver natively.
+QUERY_DRIVER="${REPO_ROOT}/Client/dependencies/clang/gnu/bin/clang++"
+
+# GNU stat first; BSD stat's -c is invalid, so it falls through. Checking GNU
+# first also covers macOS with Homebrew coreutils' gnubin on PATH.
+get_mtime() {
+  stat -c '%Y' "$1" 2>/dev/null || stat -f '%m' "$1"
+}
+
+NEWEST_DB_FILE=""
+NEWEST_DB_MTIME=-1
+
+consider_database() {
+  local file="$1"
+  local mtime
+
+  [[ -f "$file" ]] || return 0
+
+  mtime="$(get_mtime "$file" 2>/dev/null)" || return 0
+
+  if [[ "$mtime" =~ ^[0-9]+$ ]] && ((mtime > NEWEST_DB_MTIME)); then
+    NEWEST_DB_MTIME="$mtime"
+    NEWEST_DB_FILE="$file"
+  fi
+}
+
+# Also support a database generated at the repository root.
+consider_database "${REPO_ROOT}/compile_commands.json"
+
+for search_root in \
+  "${REPO_ROOT}/build" \
+  "${REPO_ROOT}/buck-out"; do
+  if [[ -d "$search_root" ]]; then
+    while IFS= read -r -d '' file; do
+      consider_database "$file"
+    done < <(
+      find "$search_root" \
+        -type f \
+        -name compile_commands.json \
+        -print0 2>/dev/null
+    )
+  fi
+done
+
+EXTRA_ARGS=()
+
+if [[ -f "$QUERY_DRIVER" ]]; then
+  EXTRA_ARGS+=("--query-driver=${QUERY_DRIVER}")
+elif [[ "$OS" != "Darwin" ]]; then
+  printf 'clangd-wrapper: warning: query driver not found: %s\n' \
+    "$QUERY_DRIVER" >&2
+fi
+
+if [[ -n "$NEWEST_DB_FILE" ]]; then
+  COMPILE_COMMANDS_DIR="$(dirname "$NEWEST_DB_FILE")"
+  EXTRA_ARGS+=("--compile-commands-dir=${COMPILE_COMMANDS_DIR}")
+else
+  printf 'clangd-wrapper: warning: no compile_commands.json found\n' >&2
+fi
+
+printf 'clangd-wrapper: clangd=%s\n' "$CLANGD" >&2
+printf 'clangd-wrapper: repo=%s\n' "$REPO_ROOT" >&2
+printf 'clangd-wrapper: database=%s\n' "${NEWEST_DB_FILE:-none}" >&2
+
+# Plain "${EXTRA_ARGS[@]}" on an empty array is an unbound-variable error
+# under set -u in bash < 4.4 (macOS ships 3.2).
+exec "$CLANGD" ${EXTRA_ARGS[@]+"${EXTRA_ARGS[@]}"} "$@"
