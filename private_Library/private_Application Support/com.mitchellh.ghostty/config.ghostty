@@ -16,3 +16,5 @@ window-padding-balance = true
 adjust-cell-height = -1
 
 link-url = true
+clipboard-read = allow
+clipboard-write = allow
