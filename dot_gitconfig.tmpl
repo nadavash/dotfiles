@@ -2,8 +2,10 @@
 	email = 4476193+nadavash@users.noreply.github.com
 	name = Nadav Ashkenazi
 [credential]
-	helper = 
+	helper =
+{{- if eq .chezmoi.os "Darwin" }}
 	helper = /usr/local/share/gcm-core/git-credential-manager
+{{- end }}
 [credential "https://dev.azure.com"]
 	useHttpPath = true
 
