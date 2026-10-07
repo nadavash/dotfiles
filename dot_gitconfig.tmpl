@@ -3,7 +3,7 @@
 	name = Nadav Ashkenazi
 [credential]
 	helper =
-{{- if eq .chezmoi.os "Darwin" }}
+{{- if eq .chezmoi.os "darwin" }}
 	helper = /usr/local/share/gcm-core/git-credential-manager
 {{- end }}
 [credential "https://dev.azure.com"]
