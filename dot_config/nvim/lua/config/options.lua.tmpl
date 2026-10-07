@@ -9,6 +9,9 @@ vim.opt.tabstop = 4      -- Number of spaces tabs count for
 vim.opt.softtabstop = 4  -- Number of spaces tabs count for while editing
 vim.opt.expandtab = true -- Use spaces instead of tabs
 
+-- Disable SmartIndent
+vim.opt.smartindent = false
+
 {{- if eq .chezmoi.hostname "nashkenazi-sovereign-linux-2" }}
 
 vim.opt.clipboard = "unnamedplus"
