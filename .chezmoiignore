@@ -1,6 +1,6 @@
 {{- if ne .chezmoi.os "darwin" }}
 
-.zsh_config
+.zshrc
 Library
 
 {{- end }}
