@@ -2,6 +2,7 @@ return {
   {
     "petertriho/nvim-scrollbar",
     event = "BufReadPost",
+    dependencies = { "kevinhwang91/nvim-hlslens" },
     opts = {
       -- Customize your scrollbar options here
       handlers = {
