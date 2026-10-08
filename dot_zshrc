@@ -6,7 +6,7 @@ if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
 fi
 
 export EDITOR='nvim'
-export VISUAL='nvim'
+export VISUAL='code'
 
 # Go bin
 export PATH="$PATH:/Users/nadav/go/bin"
