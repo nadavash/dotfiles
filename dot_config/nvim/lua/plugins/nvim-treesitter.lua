@@ -20,6 +20,9 @@ return {
         "rust",
         "ron",
       },
+      indent = {
+        disable = { "c", "cpp" },
+      },
     },
   },
 }
