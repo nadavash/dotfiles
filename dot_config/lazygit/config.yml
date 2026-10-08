@@ -1,2 +1,2 @@
-skipDiscardChangeWarning: true
-
+gui:
+  skipDiscardChangeWarning: true
