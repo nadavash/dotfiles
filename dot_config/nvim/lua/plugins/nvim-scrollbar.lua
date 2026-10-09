@@ -4,6 +4,10 @@ return {
     event = "BufReadPost",
     dependencies = { "kevinhwang91/nvim-hlslens" },
     opts = {
+      handle = {
+        text = " ",
+        color = "FFFFFF",
+      },
       -- Customize your scrollbar options here
       handlers = {
         cursor = true,
