@@ -7,6 +7,8 @@ fi
 
 export EDITOR='nvim'
 export VISUAL='nvim'
+export MERGE_TOOL='code'
+export GIT_MERGE_TOOL='code'
 
 # Go bin
 export PATH="$PATH:/Users/nadav/go/bin"
