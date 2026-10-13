@@ -2,10 +2,10 @@ onboarding = false
 
 [ui]
 show_agent_labels_on_pane_borders = true
+status_indicators = "symbols"
 
 [theme]
 name = "catppuccin"
 auto_switch = true
 light_name = "catppuccin-latte"
 dark_name = "catppuccin"
-
