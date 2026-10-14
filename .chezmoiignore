@@ -1,3 +1,10 @@
+# Herdr
+.config/herdr/*
+!.config/herdr/config.toml
+!.config/herdr/plugins
+.config/herdr/plugins/*
+!.config/herdr/plugins/config
+
 {{- if ne .chezmoi.os "darwin" }}
 
 .zshrc
