@@ -8,13 +8,6 @@ fi
 
 echo "Installing/Updating Herdr plugins..."
 
-PLUGINS=(
-    "jeffarese/herdr-bar"
-    "ChmaraX/herdr-nvim"
-)
-
-for plugin in "${PLUGINS[@]}"; do
-    herdr plugin install "$plugin" --yes
-done
+herdr sync --lockfile "$HOME/.config/herdr/.plugins.lock"
 
 herdr server reload-config
