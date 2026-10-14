@@ -9,8 +9,8 @@ fi
 echo "Installing/Updating Herdr plugins..."
 
 PLUGINS=(
-    "jeffarese/herdr-bar",
-    "ChmaraX/herdr-nvim",
+    "jeffarese/herdr-bar"
+    "ChmaraX/herdr-nvim"
 )
 
 for plugin in "${PLUGINS[@]}"; do
