@@ -8,6 +8,7 @@ fi
 
 echo "Installing/Updating Herdr plugins..."
 
+herdr plugin install persiyanov/herdr-reviewr --yes
 herdr plugin install jeffarese/herdr-bar --yes
 herdr plugin install ChmaraX/herdr-nvim --yes
 
