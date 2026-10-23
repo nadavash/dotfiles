@@ -3,6 +3,14 @@ onboarding = false
 [ui]
 show_agent_labels_on_pane_borders = true
 status_indicators = "symbols"
+tab_bar_right = [
+    { type = "zoom" },
+    { type = "hostname" },
+    { type = "datetime", format = "%H:%M" },
+    { type = "text", text = "prod" },
+    { type = "command", command = "~/.config/herdr/status.sh", interval_seconds = 5, timeout_seconds = 2 },
+]
+tab_bar_right_separator = " · "
 
 [ui.toast]
 delivery = "terminal"
@@ -12,6 +20,9 @@ name = "catppuccin"
 auto_switch = true
 light_name = "catppuccin-latte"
 dark_name = "catppuccin"
+
+[worktrees]
+directory = "~/.herdr/worktrees"
 
 [[keys.command]]
 key = "prefix+k"
