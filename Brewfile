@@ -1,20 +1,40 @@
 tap "aviator-co/tap"
 tap "coder/coder"
-tap "jandedobbeleer/oh-my-posh"
+tap "homebrew/services"
+tap "jandedobbeleer/oh-my-posh", trusted: true
+tap "withgraphite/tap"
+# User-friendly launcher for Bazel
+brew "bazelisk"
 # Manage your dotfiles across multiple diverse machines, securely
 brew "chezmoi"
 # Formatting tools for C, C++, Obj-C, Java, JavaScript, TypeScript
 brew "clang-format"
 # Cross-platform make
 brew "cmake"
+# Pack, ship and run any application as a lightweight container
+brew "docker"
+# Isolated development environments using Docker
+brew "docker-compose"
 # Simple, fast and user-friendly alternative to find
 brew "fd"
+# TIFF library and utilities
+brew "libtiff"
 # GitHub command-line tool
 brew "gh"
 # Distributed revision control system
 brew "git"
+# Multi-platform library for OpenGL applications
+brew "glfw"
+# C++ mathematics library for graphics software
+brew "glm"
+# Open source programming language to build simple/reliable/efficient software
+brew "go"
+# Graph visualization software from AT&T and Bell Labs
+brew "graphviz"
 # Agent multiplexer that lives in your terminal
 brew "herdr"
+# Lightweight and flexible command-line JSON processor
+brew "jq"
 # Simple terminal UI for git commands
 brew "lazygit"
 # Library to communicate with iOS devices natively
@@ -23,8 +43,20 @@ brew "libimobiledevice"
 brew "luarocks"
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
+# No Nonsense Neovim Client in Rust
+brew "neovide"
+# Small build system for use with gyp or CMake
+brew "ninja"
+# Cryptography and SSL/TLS Toolkit
+brew "openssl@3"
+# Open-source, cross-platform JavaScript runtime environment
+brew "node"
 # Search tool like grep and The Silver Searcher
 brew "ripgrep"
+# Rust toolchain installer
+brew "rustup"
+# SDL2 compatibility layer that uses SDL3 behind the scenes
+brew "sdl2-compat"
 # Extremely fast Python package installer and resolver, written in Rust
 brew "uv"
 # Internet file retriever
@@ -32,14 +64,25 @@ brew "wget"
 brew "aviator-co/tap/av", trusted: true
 # Prompt theme engine for any shell
 brew "jandedobbeleer/oh-my-posh/oh-my-posh", trusted: true
+# App for managing battery charging. (Also installs a CLI on first use.)
+cask "battery"
+# 3D creation suite
+cask "blender"
 # Native desktop client for Coder
 cask "coder/coder/coder-desktop", trusted: true
 # Brings the power of Copilot coding agent directly to your terminal
 cask "copilot-cli"
 # Terminal emulator that uses platform-native UI and GPU acceleration
 cask "ghostty"
+# Cross-platform Git credential storage for multiple hosting providers
+cask "git-credential-manager"
+# Terminal emulator as alternative to Apple's Terminal app
+cask "iterm2"
+# Open-source code editor
+cask "visual-studio-code"
 # Multiplayer code editor
 cask "zed"
+vscode "amazonwebservices.codewhisperer-for-command-line-companion"
 vscode "anthropic.claude-code"
 vscode "asvetliakov.vscode-neovim"
 vscode "barbosshack.crates-io"
@@ -116,4 +159,7 @@ vscode "twxs.cmake"
 vscode "usernamehw.errorlens"
 vscode "vadimcn.vscode-lldb"
 vscode "xaver.clang-format"
+go "github.com/bazelbuild/buildtools/buildifier"
+cargo "rustlings"
+npm "@xai-official/grok"
 npm "corepack"
