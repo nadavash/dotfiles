@@ -2,5 +2,6 @@
 #!/bin/bash
 
 # MacOS build version: {{ output "sw_vers" "--buildVersion" }}
+brew update
 brew bundle --file=$HOME/Brewfile
 {{ end -}}
