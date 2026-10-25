@@ -1,5 +1,5 @@
 local LIGHT_THEME = "catppuccin-latte"
-local DARK_THEME = "catpuccin-frappe"
+local DARK_THEME = "catppuccin-frappe"
 
 return {
   -- 1. Install your preferred dark and light colorschemes
