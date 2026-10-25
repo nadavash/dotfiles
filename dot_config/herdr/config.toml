@@ -25,7 +25,7 @@ dark_name = "catppuccin"
 directory = "~/.herdr/worktrees"
 
 [[keys.command]]
-key = "cmd+k"
+key = "cmd+p"
 type = "plugin_action"
 command = "herdr-bar.open"
 description = "command bar"
