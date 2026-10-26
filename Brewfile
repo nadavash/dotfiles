@@ -1,5 +1,4 @@
 tap "aviator-co/tap"
-tap "homebrew/services"
 tap "jandedobbeleer/oh-my-posh", trusted: true
 tap "withgraphite/tap"
 # User-friendly launcher for Bazel
@@ -59,7 +58,6 @@ cask "git-credential-manager"
 cask "visual-studio-code"
 # Multiplayer code editor
 cask "zed"
-vscode "amazonwebservices.codewhisperer-for-command-line-companion"
 vscode "anthropic.claude-code"
 vscode "asvetliakov.vscode-neovim"
 vscode "barbosshack.crates-io"
