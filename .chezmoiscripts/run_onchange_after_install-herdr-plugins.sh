@@ -12,4 +12,6 @@ herdr plugin install persiyanov/herdr-reviewr --yes
 herdr plugin install jeffarese/herdr-bar --yes
 herdr plugin install ChmaraX/herdr-nvim --yes
 
+herdr plugin update --yes
+
 herdr server reload-config
