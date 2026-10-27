@@ -19,7 +19,7 @@ delivery = "terminal"
 name = "catppuccin"
 auto_switch = true
 light_name = "catppuccin-latte"
-dark_name = "catppuccin"
+dark_name = "catppuccin-mocha"
 
 [worktrees]
 directory = "~/.herdr/worktrees"
