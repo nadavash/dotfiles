@@ -1,4 +1,4 @@
-theme = dark:Catppuccin Frappe,light:Catppuccin Mocha
+theme = dark:Catppuccin Mocha,light:Catppuccin Latte
 
 macos-icon = custom
 macos-custom-icon = ~/Library/Application Support/com.mitchellh.ghostty/ayu-mirage.icns
