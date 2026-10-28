@@ -1,7 +1,7 @@
 theme = dark:Catppuccin Mocha,light:Catppuccin Latte
 
 macos-icon = custom
-macos-custom-icon = ~/Library/Application Support/com.mitchellh.ghostty/ayu-mirage.icns
+macos-custom-icon = ~/.config/ghostty/ayu-mirage.icns
 macos-option-as-alt = true
 
 font-size = 14
