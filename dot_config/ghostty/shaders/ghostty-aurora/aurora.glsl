@@ -13,7 +13,7 @@
 #define THEME_MONOKAI 8
 
 // CHANGE THIS VALUE TO SWITCH THEMES
-#define ACTIVE_THEME THEME_AURORA
+#define ACTIVE_THEME THEME_CATPPUCCIN
 
 // -----------------------------------------------------------------------------
 // Settings
