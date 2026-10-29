@@ -6,8 +6,8 @@ macos-option-as-alt = true
 
 font-size = 14
 
-background-opacity = 0.75
-background-blur = macos-glass-regular
+background-opacity = 0.9
+background-blur-radius = 30
 unfocused-split-opacity = 0.2
 
 window-decoration = auto
