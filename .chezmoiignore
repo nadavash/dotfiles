@@ -5,10 +5,12 @@
 .config/herdr/plugins/*
 !.config/herdr/plugins/config
 
+# Homebrew
+Brewfile
+
 {{- if ne .chezmoi.os "darwin" }}
 
 .zshrc
-Brewfile
 Library
 
 {{- end }}

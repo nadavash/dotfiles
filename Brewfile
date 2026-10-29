@@ -31,8 +31,6 @@ brew "lazygit"
 brew "luarocks"
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
-# No Nonsense Neovim Client in Rust
-brew "neovide"
 # Small build system for use with gyp or CMake
 brew "ninja"
 # Cryptography and SSL/TLS Toolkit
@@ -54,6 +52,8 @@ brew "jandedobbeleer/oh-my-posh/oh-my-posh", trusted: true
 cask "ghostty"
 # Cross-platform Git credential storage for multiple hosting providers
 cask "git-credential-manager"
+# Neovim Client
+cask "neovide-app"
 # Open-source code editor
 cask "visual-studio-code"
 # Multiplayer code editor

@@ -3,5 +3,5 @@
 
 # MacOS build version: {{ output "sw_vers" "--buildVersion" }}
 brew update
-brew bundle --file=$HOME/Brewfile
+brew bundle --file={{ joinPath .chezmoi.sourceDir "Brewfile" | quote }}
 {{ end -}}
