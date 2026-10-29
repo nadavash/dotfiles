@@ -1,0 +1,15 @@
+{{- /*
+  Machine-local settings. `chezmoi init` asks once and stores the answers in
+  ~/.config/chezmoi/chezmoi.toml, which is never committed, so work-only
+  hosts, URLs and emails stay out of this public repo.
+*/ -}}
+{{- $work := promptBoolOnce . "work.enabled" "Is this a work machine" false -}}
+[data.work]
+  enabled = {{ $work }}
+{{- if $work }}
+  # "laptop" or "devbox"
+  machine = {{ promptChoiceOnce . "work.machine" "Work machine type" (list "laptop" "devbox") | quote }}
+  email = {{ promptStringOnce . "work.email" "Work email" | quote }}
+  github_host = {{ promptStringOnce . "work.github_host" "Work GitHub Enterprise host" | quote }}
+  gobot_nvim_url = {{ promptStringOnce . "work.gobot_nvim_url" "gobot.nvim git URL" | quote }}
+{{- end }}

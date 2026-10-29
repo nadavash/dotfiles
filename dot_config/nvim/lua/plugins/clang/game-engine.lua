@@ -1,12 +1,3 @@
-local allowed_hosts = {
-  ["HQ-F472JY6XK0"] = true,
-  ["nashkenazi-sovereign-linux-2"] = true,
-}
-
-if not allowed_hosts[vim.fn.hostname()] then
-  return {}
-end
-
 local clangd_wrapper = vim.fn.stdpath("config") .. "/tools/clangd-wrapper"
 local default_platform = vim.fn.has("mac") == 1 and "macos/arm64" or "linux/x86_64"
 local targets = { "client", "studio", "common-tests" }

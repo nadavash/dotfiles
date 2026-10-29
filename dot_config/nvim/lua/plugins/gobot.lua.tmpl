@@ -1,0 +1,74 @@
+-- gobot.nvim: build, run and debug game-engine targets (Neovim port of VSGobot).
+
+local MARKERS = { "gobot.yaml", "gobot.yml" }
+
+-- True when `source` (a path or buffer) is inside a project with a gobot marker at its root.
+local function in_gobot_project(source)
+  local ok, root = pcall(vim.fs.root, source, MARKERS)
+  return ok and root ~= nil
+end
+
+return {
+  {
+    url = {{ .work.gobot_nvim_url | quote }},
+    name = "gobot.nvim",
+    branch = "main",
+    dependencies = { "folke/snacks.nvim", "mfussenegger/nvim-dap" },
+    -- Loaded only for gobot projects: when the working directory is inside one,
+    -- or when a file from one is opened.
+    lazy = true,
+    init = function()
+      local group = vim.api.nvim_create_augroup("gobot_lazy_load", { clear = true })
+      local function load()
+        pcall(vim.api.nvim_del_augroup_by_id, group)
+        vim.schedule(function()
+          require("lazy").load({ plugins = { "gobot.nvim" } })
+        end)
+      end
+      local function check_cwd()
+        if in_gobot_project(vim.fn.getcwd()) then
+          load()
+          return true
+        end
+      end
+      vim.api.nvim_create_autocmd({ "VimEnter", "DirChanged" }, { group = group, callback = check_cwd })
+      vim.api.nvim_create_autocmd("BufReadPost", {
+        group = group,
+        callback = function(ev)
+          local name = vim.api.nvim_buf_get_name(ev.buf)
+          if name ~= "" and vim.bo[ev.buf].buftype == "" and in_gobot_project(name) then
+            load()
+          end
+        end,
+      })
+      -- The spec can be evaluated after VimEnter (e.g. :Lazy reload).
+      if vim.v.vim_did_enter == 1 then
+        check_cwd()
+      end
+    end,
+    opts = {
+      -- clangd already runs through tools/clangd-wrapper (plugins/clang/game-engine.lua);
+      -- gobot.nvim only regenerates compile commands and restarts it.
+      clangd = { manage = false },
+    },
+  },
+  {
+    "nvim-lualine/lualine.nvim",
+    optional = true,
+    opts = function(_, opts)
+      opts.sections = opts.sections or {}
+      opts.sections.lualine_x = opts.sections.lualine_x or {}
+      table.insert(opts.sections.lualine_x, 1, {
+        function()
+          return require("gobot.statusline").text()
+        end,
+        cond = function()
+          return package.loaded["gobot.workspace"] ~= nil and require("gobot.workspace").enabled()
+        end,
+        on_click = function()
+          require("gobot.picker").select_target()
+        end,
+      })
+    end,
+  },
+}

@@ -9,5 +9,8 @@
 [credential "https://dev.azure.com"]
 	useHttpPath = true
 
-[includeIf "hasconfig:remote.*.url:https://github.rbx.com/**"]
+{{- if dig "work" "enabled" false . }}
+
+[includeIf "hasconfig:remote.*.url:https://{{ .work.github_host }}/**"]
 	path = ~/.gitconfig-work
+{{- end }}

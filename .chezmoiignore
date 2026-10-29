@@ -8,9 +8,21 @@
 # Homebrew
 Brewfile
 
+# Neovim plugin lockfile: lazy.nvim keeps its own per machine
+.config/nvim/lazy-lock.json
+
 {{- if ne .chezmoi.os "darwin" }}
 
 .zshrc
 Library
+
+{{- end }}
+
+# Work-only files (data.work comes from the local, uncommitted chezmoi.toml)
+{{- if not (dig "work" "enabled" false .) }}
+
+.gitconfig-work
+.config/nvim/lua/plugins/gobot.lua
+.config/nvim/lua/plugins/clang
 
 {{- end }}

@@ -12,7 +12,7 @@ vim.opt.expandtab = true -- Use spaces instead of tabs
 -- Disable SmartIndent
 vim.opt.smartindent = false
 
-{{- if eq .chezmoi.hostname "nashkenazi-sovereign-linux-2" }}
+{{- if eq (dig "work" "machine" "" .) "devbox" }}
 
 vim.opt.clipboard = "unnamedplus"
 

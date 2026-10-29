@@ -3,7 +3,7 @@
 # av-cli aliases
 alias av-sync-full='av sync --rebase-to-trunk --push=yes --prune=yes --ff-trunk'
 
-{{- if eq .chezmoi.hostname "HQ-F472JY6XK0" }}
+{{- if eq (dig "work" "machine" "" .) "laptop" }}
 
 # Work laptop configuration:
 
