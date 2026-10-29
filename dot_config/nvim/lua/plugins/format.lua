@@ -1,3 +1,10 @@
+-- Add this right at the top of your format.lua or inside config/autocmds.lua
+vim.filetype.add({
+  extension = {
+    fbs = "fbs",
+  },
+})
+
 return {
   -- Configure conform.nvim within LazyVim
   {
