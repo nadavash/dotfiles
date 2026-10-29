@@ -22,11 +22,11 @@
 const float SPEED = 0.1;
 const float CORNER_RADIUS = 0.3;
 const float DECAY_START = 0.1;
-const float DECAY_RATE = 8.0;
+const float DECAY_RATE = 10.0;
 
 // Rectangular Cutoff Settings
 const float GLOW_CUTOFF_DISTANCE = 0.3;
-const float GLOW_CUTOFF_SOFTNESS = 0.5;
+const float GLOW_CUTOFF_SOFTNESS = 0.8;
 
 // Dithering Strength
 const float DITHER_STRENGTH = 1.0 / 50.0;

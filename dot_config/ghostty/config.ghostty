@@ -3,6 +3,7 @@ theme = dark:Catppuccin Mocha,light:Catppuccin Latte
 macos-icon = custom
 macos-custom-icon = ~/.config/ghostty/ayu-mirage.icns
 macos-option-as-alt = true
+# macos-titlebar-style = tabs
 
 font-size = 14
 
@@ -10,6 +11,7 @@ background-opacity = 0.9
 background-blur-radius = 30
 unfocused-split-opacity = 0.2
 
+window-theme = ghostty
 window-decoration = auto
 window-padding-x = 0
 window-padding-y = 0
