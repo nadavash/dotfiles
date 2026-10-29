@@ -29,7 +29,7 @@ const vec4 TRAIL_COLOR = vec4(0.706, 0.745, 0.996, 1.0);
 // Catppuccin Mocha Blue (#89b4fa)
 const vec4 TRAIL_COLOR_ACCENT = vec4(0.537, 0.706, 0.980, 1.0); 
 
-const float DURATION = 0.3; //IN SECONDS
+const float DURATION = 0.2; //IN SECONDS
 
 void mainImage(out vec4 fragColor, in vec2 fragCoord) {
   fragColor = texture(iChannel0, fragCoord.xy / iResolution.xy);
