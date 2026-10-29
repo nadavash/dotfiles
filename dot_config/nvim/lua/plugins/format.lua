@@ -20,6 +20,10 @@ return {
           stdin = true,
         },
       },
+      -- Forces LazyVim to fall back to conform when no LSP is running on the file
+      format_on_save = function()
+        return { timeout_ms = 500, lsp_fallback = true }
+      end,
     },
   },
 
