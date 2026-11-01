@@ -1,5 +1,5 @@
 local LIGHT_THEME = "tokyonight-day"
-local DARK_THEME = "tokyonight"
+local DARK_THEME = "tokyonight-night"
 
 return {
   -- 1. Install your preferred dark and light colorschemes
