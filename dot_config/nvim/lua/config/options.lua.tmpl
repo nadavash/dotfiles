@@ -12,6 +12,14 @@ vim.opt.expandtab = true -- Use spaces instead of tabs
 -- Disable SmartIndent
 vim.opt.smartindent = false
 
+-- Vertical line-length ruler
+vim.opt.colorcolumn = "100"
+vim.api.nvim_create_autocmd("ColorScheme", {
+  callback = function()
+    vim.api.nvim_set_hl(0, "ColorColumn", { bg = "#3b4261" })
+  end,
+})
+
 {{- if eq (dig "work" "machine" "" .) "devbox" }}
 
 vim.opt.clipboard = "unnamedplus"
