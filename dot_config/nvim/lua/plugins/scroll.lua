@@ -1,6 +1,12 @@
 return {
   {
     "mihovilrak/scroll.nvim",
-    opts = { minimap = true, explorer = true },
+    opts = {
+      minimap = {
+        enabled = true,
+        width = 5,
+      },
+      explorer = true,
+    },
   },
 }
