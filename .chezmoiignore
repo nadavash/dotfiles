@@ -26,3 +26,12 @@ Library
 .config/nvim/lua/plugins/clang
 
 {{- end }}
+
+# Agent skills: canonical copies live in ~/.agents/skills, Claude Code gets
+# per-skill symlinks in ~/.claude/skills (rbx-skills manages the rest of it)
+{{- if not (lookPath "herdr") }}
+
+.agents/skills/herdr
+.claude/skills/herdr
+
+{{- end }}
