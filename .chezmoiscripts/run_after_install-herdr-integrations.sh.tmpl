@@ -1,0 +1,30 @@
+{{- if lookPath "herdr" -}}
+#!/bin/bash
+
+# Install or upgrade herdr's agent-state integration for every supported agent
+# that is present on this machine. Runs on every apply but only acts on
+# integrations that are missing or outdated, so it is a no-op when current.
+
+while IFS= read -r line; do
+    # e.g. "claude: outdated (v7 < v11) (/Users/me/.claude/hooks/herdr-agent-state.sh)"
+    [[ $line =~ ^([a-z0-9_-]+)( \(experimental\))?:\ (.*)\ \(([^()]*)\)$ ]] || continue
+    name=${BASH_REMATCH[1]}
+    state=${BASH_REMATCH[3]}
+    path=${BASH_REMATCH[4]}
+
+    [[ $state == "not installed" || $state == outdated* ]] || continue
+
+    # Only touch agents whose config dir already exists (~/.claude, ~/.config/opencode, ...)
+    rel=${path#"$HOME"/}
+    if [[ $rel == .config/* ]]; then
+        rel=${rel#.config/}
+        dir="$HOME/.config/${rel%%/*}"
+    else
+        dir="$HOME/${rel%%/*}"
+    fi
+    [[ -d $dir ]] || continue
+
+    echo "Installing herdr integration for $name ($state)..."
+    herdr integration install "$name"
+done < <(herdr integration status)
+{{ end -}}
