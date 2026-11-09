@@ -3,6 +3,9 @@
 # av-cli aliases
 alias av-sync-full='av sync --rebase-to-trunk --push=yes --prune=yes --ff-trunk'
 
+# Agent helper aliases
+alias claude-yolo='claude --dangerously-skip-permissions'
+
 {{- if eq (dig "work" "machine" "" .) "laptop" }}
 
 # Work laptop configuration:
