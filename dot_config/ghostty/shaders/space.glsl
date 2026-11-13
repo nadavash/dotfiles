@@ -1,7 +1,7 @@
 #define LAYERS        3
 #define DENSITY       20.0
 #define STAR_SIZE     0.06
-#define BRIGHTNESS    0.3
+#define BRIGHTNESS    0.2
 #define STAR_COLOR    vec3(0.9, 0.93, 1.0)
 #define BLEND_THRESH  0.5
 
