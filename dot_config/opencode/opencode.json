@@ -3,16 +3,34 @@
     "llm-gateway": {
       "models": {
         "gemini-4-argon": {
-          "name": "Gemini 4 Argon"
+          "name": "Gemini 4 Argon",
+          "reasoning": true,
+          "variants": {
+            "low": { "reasoningEffort": "low" },
+            "medium": { "reasoningEffort": "medium" },
+            "high": { "reasoningEffort": "high" }
+          }
         },
-        "gemini-4-hydrogen": {  
-          "name": "Gemini 4 Hydrogen"
+        "gemini-4-hydrogen": {
+          "name": "Gemini 4 Hydrogen",
+          "reasoning": true,
+          "variants": {
+            "low": { "reasoningEffort": "low" },
+            "medium": { "reasoningEffort": "medium" },
+            "high": { "reasoningEffort": "high" },
+            "xhigh": { "reasoningEffort": "xhigh" }
+          }
         },
         "gemini-4-carbon": {
-          "name": "Gemini 4 Carbon"
+          "name": "Gemini 4 Carbon",
+          "reasoning": true,
+          "variants": {
+            "low": { "reasoningEffort": "low" },
+            "medium": { "reasoningEffort": "medium" },
+            "high": { "reasoningEffort": "high" }
+          }
         }
       }
     }
   }
 }
-
