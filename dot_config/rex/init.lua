@@ -1,0 +1,2 @@
+-- Rex config, migrated from tmux, Herdr, Ghostty and iTerm2.
+-- None of those sources had a key binding with a Rex counterpart, so Rex's defaults stand.
