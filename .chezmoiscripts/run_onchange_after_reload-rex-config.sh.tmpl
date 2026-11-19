@@ -1,0 +1,8 @@
+#!/bin/bash
+{{- range (glob (joinPath .chezmoi.sourceDir "dot_config/rex/*.lua")) }}
+# {{ base . }}: {{ include . | sha256sum }}
+{{- end }}
+
+if command -v rex &>/dev/null; then
+	rex config reload --autostart=false || true
+fi
