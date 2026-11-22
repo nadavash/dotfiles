@@ -1,0 +1,10 @@
+{{- if lookPath "rex" -}}
+#!/bin/bash
+set -euo pipefail
+
+# Install or update Rex's built-in agent skill and session hooks whenever
+# rex is present and any detected agent is missing or outdated.
+if rex skill status 2>/dev/null | grep -Eq 'missing|outdated'; then
+    rex skill setup
+fi
+{{ end -}}
