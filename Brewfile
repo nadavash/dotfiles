@@ -1,5 +1,3 @@
-tap "aviator-co/tap"
-tap "jandedobbeleer/oh-my-posh", trusted: true
 tap "withgraphite/tap"
 
 # --- Cross-platform CLI tools (macOS & Linux) ---
@@ -40,9 +38,8 @@ brew "rustup"
 brew "uv"
 # Internet file retriever
 brew "wget"
-brew "aviator-co/tap/av", trusted: true
 # Prompt theme engine for any shell
-brew "jandedobbeleer/oh-my-posh/oh-my-posh", trusted: true
+brew "oh-my-posh"
 npm "@xai-official/grok"
 
 # --- macOS-only packages, GUI casks, and desktop extensions ---
