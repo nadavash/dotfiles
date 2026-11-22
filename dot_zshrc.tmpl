@@ -1,0 +1,57 @@
+# Homebrew (must run before oh-my-posh and other brew-installed tools)
+{{- if eq .chezmoi.os "darwin" }}
+if [ -x "/opt/homebrew/bin/brew" ]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [ -x "/usr/local/bin/brew" ]; then
+  eval "$(/usr/local/bin/brew shellenv)"
+fi
+{{- else if eq .chezmoi.os "linux" }}
+if [ -x "/home/linuxbrew/.linuxbrew/bin/brew" ]; then
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+elif [ -x "$HOME/.linuxbrew/bin/brew" ]; then
+  eval "$("$HOME/.linuxbrew/bin/brew" shellenv)"
+fi
+{{- end }}
+
+if [ -n "${HOMEBREW_PREFIX:-}" ] && [ -d "$HOMEBREW_PREFIX/opt/rustup/bin" ]; then
+  export PATH="$HOMEBREW_PREFIX/opt/rustup/bin:$PATH"
+fi
+
+# Various paths
+export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/bin:$PATH"
+export PATH="$HOME/.foreman/bin:$PATH"
+export PATH="$PATH:$HOME/go/bin"
+
+# >>> grok installer >>>
+if [ -d "$HOME/.grok/bin" ]; then
+  export PATH="$HOME/.grok/bin:$PATH"
+fi
+if [ -d "$HOME/.grok/completions/zsh" ]; then
+  fpath=("$HOME/.grok/completions/zsh" $fpath)
+fi
+# <<< grok installer <<<
+
+autoload -Uz compinit
+compinit
+
+if [ "$TERM_PROGRAM" != "Apple_Terminal" ] && command -v oh-my-posh >/dev/null 2>&1; then
+  eval "$(oh-my-posh init zsh --config 'pure')"
+fi
+
+export EDITOR='nvim'
+export VISUAL='nvim'
+{{- if eq .chezmoi.os "darwin" }}
+export MERGE_TOOL='code'
+export GIT_MERGE_TOOL='code'
+{{- else }}
+export MERGE_TOOL='nvim'
+export GIT_MERGE_TOOL='nvim'
+{{- end }}
+
+# Aliases
+[ -f ~/.zsh_aliases ] && source ~/.zsh_aliases
+
+# Machine-local overrides (not managed by chezmoi)
+[ -f ~/.zshrc.local ] && source ~/.zshrc.local
+

@@ -1,0 +1,36 @@
+{{- if eq .chezmoi.os "linux" -}}
+#!/bin/bash
+set -euo pipefail
+
+if ! command -v zsh &>/dev/null; then
+    if command -v apt-get &>/dev/null; then
+        echo "Installing zsh via apt..."
+        sudo apt-get update
+        sudo apt-get install -y zsh
+    else
+        echo "zsh not found and apt-get unavailable; skipping zsh setup." >&2
+        exit 0
+    fi
+fi
+
+BASHRC="$HOME/.bashrc"
+MARKER="# >>> chezmoi zsh handoff >>>"
+
+touch "$BASHRC"
+if ! grep -Fq "$MARKER" "$BASHRC"; then
+    echo "Adding interactive zsh handoff to $BASHRC..."
+    cat >> "$BASHRC" <<'EOF'
+
+# >>> chezmoi zsh handoff >>>
+if [ -t 1 ] && [ -z "${ZSH_VERSION:-}" ] && [ -z "${NO_ZSH:-}" ] && command -v zsh >/dev/null 2>&1; then
+  case "$-" in
+    *i*)
+      export SHELL="$(command -v zsh)"
+      exec "$SHELL"
+      ;;
+  esac
+fi
+# <<< chezmoi zsh handoff <<<
+EOF
+fi
+{{- end }}

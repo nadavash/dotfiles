@@ -13,7 +13,6 @@ Brewfile
 
 {{- if ne .chezmoi.os "darwin" }}
 
-.zshrc
 Library
 
 {{- end }}
