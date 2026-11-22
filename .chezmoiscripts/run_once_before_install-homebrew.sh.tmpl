@@ -26,8 +26,18 @@ else
         sudo apt-get update
         sudo apt-get install -y build-essential procps curl file git
     fi
-{{- end }}
+    # Pre-create /home/linuxbrew/.linuxbrew owned by the current user so
+    # Homebrew's installer doesn't need to probe sudo with `sudo -v`/`sudo -l`
+    # (which can falsely prompt for a password on NOPASSWD cloud boxes).
+    if [ ! -w "/home/linuxbrew/.linuxbrew" ]; then
+        sudo mkdir -p /home/linuxbrew/.linuxbrew
+        sudo chown -R "$(id -un):$(id -gn)" /home/linuxbrew/.linuxbrew
+    fi
+    echo "Installing Homebrew..."
+    NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+{{- else }}
     echo "Installing Homebrew..."
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+{{- end }}
 fi
 {{- end }}
