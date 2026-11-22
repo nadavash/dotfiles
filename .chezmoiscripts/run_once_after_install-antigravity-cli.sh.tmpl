@@ -1,0 +1,9 @@
+{{- if eq .chezmoi.os "linux" -}}
+#!/bin/bash
+set -euo pipefail
+
+if ! command -v agy &>/dev/null && [ ! -x "$HOME/.local/bin/agy" ]; then
+    echo "Installing Antigravity CLI (agy)..."
+    curl -fsSL https://antigravity.google/cli/install.sh | bash
+fi
+{{- end }}

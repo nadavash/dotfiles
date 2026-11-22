@@ -54,6 +54,8 @@ if OS.mac?
   # Cryptography and SSL/TLS Toolkit
   brew "openssl@3"
 
+  # Google Antigravity CLI (agy)
+  cask "antigravity-cli"
   # Terminal emulator that uses platform-native UI and GPU acceleration
   cask "ghostty"
   # Cross-platform Git credential storage for multiple hosting providers
