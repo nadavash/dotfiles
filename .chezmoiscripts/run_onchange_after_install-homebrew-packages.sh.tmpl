@@ -1,7 +1,30 @@
-{{- if eq .chezmoi.os "darwin" -}}
+{{- if or (eq .chezmoi.os "darwin") (eq .chezmoi.os "linux") -}}
 #!/bin/bash
+set -euo pipefail
 
+{{- if eq .chezmoi.os "darwin" }}
 # MacOS build version: {{ output "sw_vers" "--buildVersion" }}
+{{- end }}
+# Brewfile hash: {{ include "Brewfile" | sha256sum }}
+
+if ! command -v brew &>/dev/null; then
+    for candidate in \
+        "/opt/homebrew/bin/brew" \
+        "/usr/local/bin/brew" \
+        "/home/linuxbrew/.linuxbrew/bin/brew" \
+        "$HOME/.linuxbrew/bin/brew"; do
+        if [ -x "$candidate" ]; then
+            eval "$("$candidate" shellenv)"
+            break
+        fi
+    done
+fi
+
+if ! command -v brew &>/dev/null; then
+    echo "Homebrew not found; skipping brew bundle." >&2
+    exit 1
+fi
+
 brew update
 brew bundle --file={{ joinPath .chezmoi.sourceDir "Brewfile" | quote }}
-{{ end -}}
+{{- end }}

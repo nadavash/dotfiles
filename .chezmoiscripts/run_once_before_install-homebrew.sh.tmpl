@@ -1,20 +1,33 @@
+{{- if or (eq .chezmoi.os "darwin") (eq .chezmoi.os "linux") -}}
 #!/bin/bash
+set -euo pipefail
 
-# Only run on macOS
-{{ if eq .chezmoi.os "darwin" -}}
+find_brew() {
+    for candidate in \
+        "$(command -v brew 2>/dev/null || true)" \
+        "/opt/homebrew/bin/brew" \
+        "/usr/local/bin/brew" \
+        "/home/linuxbrew/.linuxbrew/bin/brew" \
+        "$HOME/.linuxbrew/bin/brew"; do
+        if [ -n "$candidate" ] && [ -x "$candidate" ]; then
+            echo "$candidate"
+            return 0
+        fi
+    done
+    return 1
+}
 
-if ! command -v brew &>/dev/null; then
+if BREW_BIN="$(find_brew)"; then
+    echo "Homebrew already installed at $BREW_BIN."
+else
+{{- if eq .chezmoi.os "linux" }}
+    if command -v apt-get &>/dev/null; then
+        echo "Installing Homebrew prerequisites via apt..."
+        sudo apt-get update
+        sudo apt-get install -y build-essential procps curl file git
+    fi
+{{- end }}
     echo "Installing Homebrew..."
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
-    # Set up shell environment immediately for the rest of the script execution
-    if [ -d "/opt/homebrew/bin" ]; then
-        eval "$(/opt/homebrew/bin/brew shellenv)"
-    else
-        eval "$(/usr/local/bin/brew shellenv)"
-    fi
-else
-    echo "Homebrew already installed."
 fi
-
-{{ end -}}
+{{- end }}
