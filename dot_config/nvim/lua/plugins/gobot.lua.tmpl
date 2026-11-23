@@ -1,10 +1,16 @@
 -- gobot.nvim: build, run and debug game-engine targets (Neovim port of VSGobot).
 
 local MARKERS = { "gobot.yaml", "gobot.yml" }
+local clangd_wrapper = vim.fn.stdpath("config") .. "/tools/clangd-wrapper"
 
 -- True when `source` (a path or buffer) is inside a project with a gobot marker at its root.
 local function in_gobot_project(source)
   local ok, root = pcall(vim.fs.root, source, MARKERS)
+  return ok and root ~= nil
+end
+
+local function in_game_engine(source)
+  local ok, root = pcall(vim.fs.root, source, { "GameEngine.code-workspace" })
   return ok and root ~= nil
 end
 
@@ -47,7 +53,7 @@ return {
       end
     end,
     opts = {
-      -- clangd already runs through tools/clangd-wrapper (plugins/clang/game-engine.lua);
+      -- clangd already runs through tools/clangd-wrapper (configured below);
       -- gobot.nvim only regenerates compile commands and restarts it.
       clangd = { manage = false },
     },
@@ -70,5 +76,22 @@ return {
         end,
       })
     end,
+  },
+  {
+    "neovim/nvim-lspconfig",
+    opts = {
+      servers = {
+        clangd = {
+          -- Decided per root so files opened after startup still get the right binary.
+          cmd = function(dispatchers, config)
+            local cmd = { "clangd" }
+            if config.root_dir and in_game_engine(config.root_dir) then
+              cmd = { clangd_wrapper }
+            end
+            return vim.lsp.rpc.start(cmd, dispatchers, { cwd = config.root_dir })
+          end,
+        },
+      },
+    },
   },
 }

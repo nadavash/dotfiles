@@ -22,7 +22,6 @@ Library
 
 .gitconfig-work
 .config/nvim/lua/plugins/gobot.lua
-.config/nvim/lua/plugins/clang
 
 {{- end }}
 
