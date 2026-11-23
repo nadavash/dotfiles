@@ -12,8 +12,14 @@ return {
     opts = {
       formatters_by_ft = {
         fbs = { "flatbuffers_format" },
+        c = { "clang-format" },
+        cpp = { "clang-format" },
+        cuda = { "clang-format" },
       },
       formatters = {
+        ["clang-format"] = {
+          prepend_args = { "--fallback-style=Google" },
+        },
         flatbuffers_format = {
           command = "flatbuffers-format",
           args = { "-" },
