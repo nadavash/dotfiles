@@ -32,6 +32,28 @@ if [ -d "$HOME/.grok/completions/zsh" ]; then
 fi
 # <<< grok installer <<<
 
+# Colors: BSD ls (macOS) reads CLICOLOR/LSCOLORS; GNU ls reads LS_COLORS from dircolors
+export CLICOLOR=1
+{{- if eq .chezmoi.os "darwin" }}
+export LSCOLORS='ExGxFxdaCxDaDahbadacec'
+{{- end }}
+if command -v dircolors >/dev/null 2>&1; then
+  _dircolors_cmd=dircolors
+elif command -v gdircolors >/dev/null 2>&1; then
+  _dircolors_cmd=gdircolors
+fi
+if [ -n "${_dircolors_cmd:-}" ]; then
+  if [ -r "$HOME/.dircolors" ]; then
+    eval "$("$_dircolors_cmd" -b "$HOME/.dircolors")"
+  else
+    eval "$("$_dircolors_cmd" -b)"
+  fi
+fi
+unset _dircolors_cmd
+{{- if eq .chezmoi.os "linux" }}
+alias ls='ls --color=auto'
+{{- end }}
+
 autoload -Uz compinit
 compinit
 
