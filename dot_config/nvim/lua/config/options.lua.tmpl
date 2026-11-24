@@ -20,30 +20,34 @@ vim.api.nvim_create_autocmd("ColorScheme", {
   end,
 })
 
--- Remote clipboard: over SSH (or on a headless Linux box such as a devbox reached
--- through herdr), yanks go to the local machine's clipboard via OSC 52. Ghostty,
--- Rex, and herdr forward it. Paste reads Neovim's own register instead of asking
--- the terminal, because OSC 52 reads are slow or blocked in most terminals.
-local is_ssh = vim.env.SSH_TTY or vim.env.SSH_CONNECTION or vim.env.SSH_CLIENT
-local is_headless_linux = vim.fn.has("linux") == 1 and not vim.env.DISPLAY and not vim.env.WAYLAND_DISPLAY
-
-if is_ssh or is_headless_linux then
+-- Clipboard: yanks always go out as OSC 52, so the terminal app you are looking at
+-- (Ghostty, Rex, or herdr passing it along) puts them on its own machine's clipboard.
+-- That works the same locally, over SSH, and through Rex without guessing whether
+-- the session is remote. Apple Terminal has no OSC 52 support, so it keeps the default.
+-- Paste: on macOS it uses pbpaste (wrong only on a remote Mac); elsewhere it reads
+-- Neovim's own register, because OSC 52 reads are slow or blocked in most terminals.
+if vim.env.TERM_PROGRAM ~= "Apple_Terminal" then
   vim.opt.clipboard = "unnamedplus"
 
   local osc52 = require("vim.ui.clipboard.osc52")
-  local function internal_paste()
-    return { vim.fn.getreg('"', 1, true), vim.fn.getregtype('"') }
+  local paste
+  if vim.fn.has("mac") == 1 then
+    paste = { "pbpaste" }
+  else
+    paste = function()
+      return { vim.fn.getreg('"', 1, true), vim.fn.getregtype('"') }
+    end
   end
 
   vim.g.clipboard = {
-    name = "osc52-copy-only",
+    name = "osc52-copy",
     copy = {
       ["+"] = osc52.copy("+"),
       ["*"] = osc52.copy("*"),
     },
     paste = {
-      ["+"] = internal_paste,
-      ["*"] = internal_paste,
+      ["+"] = paste,
+      ["*"] = paste,
     },
   }
 end

@@ -1,5 +1,5 @@
 gui:
   skipDiscardChangeWarning: true
 os:
-  # clipcopy uses pbcopy locally and OSC 52 over SSH, so copies reach this Mac either way
+  # clipcopy sends OSC 52, so copies reach the machine running the terminal app
   copyToClipboardCmd: printf '%s' {{text}} | "$HOME/.local/bin/clipcopy"

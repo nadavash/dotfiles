@@ -1,9 +1,11 @@
 #!/bin/sh
 # Copy stdin (or the arguments) to the clipboard of the machine you are sitting at.
 #
-# On a local session it uses the native clipboard tool. Over SSH, or on a headless
-# Linux box, it sends an OSC 52 escape to the terminal; Ghostty, Rex, and herdr
-# pass that up to the local clipboard.
+# When there is a terminal, it sends an OSC 52 escape. The terminal app you are
+# looking at (Ghostty, Rex, or herdr passing it along) writes that to its own
+# machine's clipboard, so this works the same locally, over SSH, and through Rex
+# without guessing whether the session is remote. Apple Terminal has no OSC 52
+# support, and scripts may have no terminal, so those fall back to the native tool.
 #
 #   echo hello | clipcopy
 #   clipcopy "some text"
@@ -16,35 +18,30 @@ else
   input=$(cat)
 fi
 
-remote=
-if [ -n "${SSH_TTY:-}" ] || [ -n "${SSH_CONNECTION:-}" ] || [ -n "${SSH_CLIENT:-}" ]; then
-  remote=1
-fi
-
-if [ -z "$remote" ]; then
-  # Darwin check matters: on Linux, ~/.local/bin/pbcopy is a shim back to this script.
-  if [ "$(uname)" = Darwin ]; then
-    printf '%s' "$input" | /usr/bin/pbcopy
-    exit 0
-  elif [ -n "${WAYLAND_DISPLAY:-}" ] && command -v wl-copy >/dev/null 2>&1; then
-    printf '%s' "$input" | wl-copy
-    exit 0
-  elif [ -n "${DISPLAY:-}" ] && command -v xclip >/dev/null 2>&1; then
-    printf '%s' "$input" | xclip -selection clipboard
-    exit 0
+# OSC 52 goes to the controlling terminal; stdout may be a pipe.
+tty_out=
+if [ "${TERM_PROGRAM:-}" != Apple_Terminal ]; then
+  if (: >/dev/tty) 2>/dev/null; then
+    tty_out=/dev/tty
+  elif [ -n "${SSH_TTY:-}" ] && [ -w "$SSH_TTY" ]; then
+    tty_out=$SSH_TTY
   fi
 fi
 
-# OSC 52 needs a terminal to write to; stdout may be a pipe.
-if (: >/dev/tty) 2>/dev/null; then
-  tty_out=/dev/tty
-elif [ -n "${SSH_TTY:-}" ] && [ -w "$SSH_TTY" ]; then
-  tty_out=$SSH_TTY
-else
-  echo "clipcopy: no terminal to send OSC 52 to" >&2
-  exit 1
+if [ -n "$tty_out" ]; then
+  b64=$(printf '%s' "$input" | base64 | tr -d '\r\n')
+  printf '\033]52;c;%s\a' "$b64" >"$tty_out"
+  exit 0
 fi
 
-b64=$(printf '%s' "$input" | base64 | tr -d '\r\n')
-
-printf '\033]52;c;%s\a' "$b64" >"$tty_out"
+# Darwin check matters: on Linux, ~/.local/bin/pbcopy is a shim back to this script.
+if [ "$(uname)" = Darwin ]; then
+  printf '%s' "$input" | /usr/bin/pbcopy
+elif [ -n "${WAYLAND_DISPLAY:-}" ] && command -v wl-copy >/dev/null 2>&1; then
+  printf '%s' "$input" | wl-copy
+elif [ -n "${DISPLAY:-}" ] && command -v xclip >/dev/null 2>&1; then
+  printf '%s' "$input" | xclip -selection clipboard
+else
+  echo "clipcopy: no terminal for OSC 52 and no clipboard tool found" >&2
+  exit 1
+fi
