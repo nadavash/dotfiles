@@ -1,0 +1,3 @@
+#!/bin/sh
+# Linux only (see .chezmoiignore): lets pbcopy habits and scripts work on remote boxes.
+exec clipcopy "$@"

@@ -20,32 +20,30 @@ vim.api.nvim_create_autocmd("ColorScheme", {
   end,
 })
 
-{{- if eq (dig "work" "machine" "" .) "devbox" }}
+-- Remote clipboard: over SSH (or on a headless Linux box such as a devbox reached
+-- through herdr), yanks go to the local machine's clipboard via OSC 52. Ghostty,
+-- Rex, and herdr forward it. Paste reads Neovim's own register instead of asking
+-- the terminal, because OSC 52 reads are slow or blocked in most terminals.
+local is_ssh = vim.env.SSH_TTY or vim.env.SSH_CONNECTION or vim.env.SSH_CLIENT
+local is_headless_linux = vim.fn.has("linux") == 1 and not vim.env.DISPLAY and not vim.env.WAYLAND_DISPLAY
 
-vim.opt.clipboard = "unnamedplus"
-
--- Build a write-only OSC 52 clipboard provider specifically for Herdr
-local osc52 = require("vim.ui.clipboard.osc52")
-local function internal_paste()
-  return { vim.fn.getreg('"', 1, true), vim.fn.getregtype('"') }
-end
-
-vim.g.clipboard = {
-  name = "osc52-copy-only",
-  copy = {
-    ["+"] = osc52.copy("+"),
-    ["*"] = osc52.copy("*"),
-  },
-  paste = {
-    ["+"] = internal_paste,
-    ["*"] = internal_paste,
-  },
-}
-
-{{- else }}
-
-if vim.env.SSH_TTY or vim.env.SSH_CONNECTION or vim.env.TERM:match("screen") or vim.env.TERM:match("tmux") then
+if is_ssh or is_headless_linux then
   vim.opt.clipboard = "unnamedplus"
-end
 
-{{- end}}
+  local osc52 = require("vim.ui.clipboard.osc52")
+  local function internal_paste()
+    return { vim.fn.getreg('"', 1, true), vim.fn.getregtype('"') }
+  end
+
+  vim.g.clipboard = {
+    name = "osc52-copy-only",
+    copy = {
+      ["+"] = osc52.copy("+"),
+      ["*"] = osc52.copy("*"),
+    },
+    paste = {
+      ["+"] = internal_paste,
+      ["*"] = internal_paste,
+    },
+  }
+end

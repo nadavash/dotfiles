@@ -15,6 +15,11 @@ Brewfile
 
 Library
 
+{{- else }}
+
+# pbcopy shim for remote Linux boxes; macOS has the real one
+.local/bin/pbcopy
+
 {{- end }}
 
 # Work-only files (data.work comes from the local, uncommitted chezmoi.toml)
