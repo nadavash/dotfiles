@@ -2,7 +2,7 @@ return {
   {
     "rawnly/rex.nvim",
     main = "rex-nvim",
-    cond = vim.env.REX_SESSION ~= nil and vim.env.REX_SESSION ~= "",
+    cond = function() return require("config.rex").in_rex() end,
     opts = {},
   },
 }
